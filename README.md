@@ -8,7 +8,7 @@
 
 #### Steps to run:
 
-` git clone https://github.com/ltsuda/training.git `
+` git clone https://github.com/ltsuda/machine-setup.git `
 
 Make sure site.yml and /wrapper/playbookwrapper.sh has Execution permission '-x'
 
