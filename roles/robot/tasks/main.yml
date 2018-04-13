@@ -60,14 +60,26 @@
   when: not hasGecko.stat.exists
 
 - name: Install the gecko driver
-  unarchive: src="/tmp/geckodriver-v{{ gecko_version }}-linux64.tar.gz" dest=/usr/local/bin/ mode=0700 copy=no
+  unarchive: 
+    src: "/tmp/geckodriver-v{{ gecko_version }}-linux64.tar.gz" 
+    dest: /usr/local/bin/ 
+    mode: 0755 
+    copy: no
+    owner: root
+    group: root
 
 - name: Download the chrome driver
   get_url: url="http://chromedriver.storage.googleapis.com/{{ chrome_version }}/chromedriver_linux64.zip" dest=/tmp mode=0777
   when: not hasChrome.stat.exists
 
 - name: Install the chrome driver
-  unarchive: src=/tmp/chromedriver_linux64.zip dest=/usr/local/bin/ mode=0700 copy=no
+  unarchive: 
+    src: /tmp/chromedriver_linux64.zip
+    dest: /usr/local/bin/ 
+    mode: 0755 
+    copy: no
+    owner: root
+    group: root
 
 - name: Clone Gitblit RobotFrameworkTests mirror
   become: no
