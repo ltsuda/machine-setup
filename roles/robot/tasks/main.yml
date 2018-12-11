@@ -84,6 +84,6 @@
 - name: Clone Gitblit RobotFrameworkTests mirror
   become: no
   git:
-    repo: git://10.100.8.90/mirrors/RobotFrameworkTests.git
-    dest: "{{ user_directory.stdout }}/vertivx/RobotFrameworkTests"
+    repo: git://xx.xx.xx.xx/mirrors/RobotFrameworkTests.git
+    dest: "{{ user_directory.stdout }}/test/RobotFrameworkTests"
     version: master
