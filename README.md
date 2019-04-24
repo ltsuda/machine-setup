@@ -2,9 +2,7 @@
 ## SHELL SCRIPT AND ANSIBLE TOOLS
 
 ### Tested on Virtualbox Machines:
-- Ubuntu 16.04
-- CentOS 7
-- Fedora 27
+- Ubuntu 18.04
 
 #### Steps to run:
 
