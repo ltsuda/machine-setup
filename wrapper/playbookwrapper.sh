@@ -5,9 +5,9 @@ RPMPKGS="ansible"
 
 if [ ! -x "/usr/bin/ansible-playbook" ]; then
   # Crude multi-os installation option
-  if [ -x "/usr/bin/apt-get" ]
+  if [ -x "/usr/bin/apt" ]
   then
-    sudo apt-get update && sudo apt-get install -y $APTPKGS
+    sudo apt update && sudo apt install -y $APTPKGS
   elif [ -x "/usr/bin/dnf" ]
   then
     sudo dnf check-update ; sudo dnf -y install $RPMPKGS
