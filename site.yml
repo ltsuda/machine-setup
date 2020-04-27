@@ -3,6 +3,10 @@
 - hosts: newusers
   become_method: sudo
   roles:
-    - { role: common, become: no }
-    - { role: robot, become: yes }
-    
+    - { role: sys-update, become: yes }
+    - { role: sys-essentials, become: yes }
+    - { role: user, become: yes }
+    - { role: ohmyzsh, become: no }
+    - { role: pyenv, become: no }
+    - { role: poetry, become: no }
+    - { role: docker, become: yes }

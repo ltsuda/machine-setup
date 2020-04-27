@@ -1,0 +1,13 @@
+---
+ohmyzsh_users:
+  - user_name: ltsuda
+    user_group: ltsuda
+    user_home: /home/ltsuda/
+    user_shell: /bin/zsh
+
+pyenv_root: /home/ltsuda/.pyenv/
+pyenv_exec: /home/ltsuda/.pyenv/bin/pyenv
+pyenv_version_global: &py_global 3.8.2
+pyenv_versions:
+  - 3.7.7
+  - *py_global

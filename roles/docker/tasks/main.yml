@@ -1,0 +1,33 @@
+---
+- name: Install required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
+
+- name: Include oh-my-zsh tasks
+  include_tasks: docker.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
+
+- name: Install docker-compose on Ubuntu 18.04
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: "/usr/local/bin/docker-compose"
+    mode: 0750
+    owner: "{{ item.user_name }}"
+    group: "{{ item.user_group }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")

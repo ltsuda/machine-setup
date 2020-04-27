@@ -1,0 +1,74 @@
+---
+- name: Ensure .cache directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.cache"
+    state: directory
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Download pyenv installer
+  get_url:
+    url: https://pyenv.run
+    dest: "{{ loop_ohmyzsh_users.user_home }}.cache/pyenv-install.sh"
+    mode: 0750
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Verify if ".pyenv" directory exists (if pyenv is installed)
+  stat:
+    path: "{{ loop_ohmyzsh_users.user_home }}.pyenv/"
+  register: pyenv
+
+- name: Install pyenv
+  command: "{{ loop_ohmyzsh_users.user_shell }} {{ loop_ohmyzsh_users.user_home }}.cache/pyenv-install.sh"
+  when: not pyenv.stat.exists
+
+- name: Read ".zshrc" to test if pyenv contents already exists later
+  command: tail -30 "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+  register: zshrc_content
+
+- name: Add pyenv PATH to .zshrc
+  blockinfile:
+    path: "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+    state: present
+    block: |
+      # Pyenv
+      export PATH="$HOME/.pyenv/bin:$PATH"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+      export CFLAGS='-O2'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK PYENV"
+  when: zshrc_content.stdout.find('export PATH="$HOME/.pyenv/bin:$PATH"') != 0 and zshrc_content.stdout.find('eval "$(pyenv init -)"') != 0 and zshrc_content.stdout.find('eval "$(pyenv virtualenv-init -)"') != 0 and zshrc_content.stdout.find("export CFLAGS='-O2'") != 0
+
+- name: Read ".zshrc" to test if pyenv contents already exists later
+  command: tail -30 "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+  register: py_versions
+
+- debug:
+    var: py_versions
+
+- name: Ensure ".pyenv/versions/" directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.pyenv/versions/"
+    state: directory
+    mode: 0750
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Read ".pyenv/versions/" to test if versions already installed
+  command: ls "{{ loop_ohmyzsh_users.user_home }}.pyenv/versions/"
+  register: py_versions
+
+- name: Install python versions
+  command: "{{ pyenv_exec }} install {{ item }}"
+  loop: "{{ pyenv_versions }}"
+  when: item not in py_versions.stdout_lines
+
+- name: Set pyenv global version
+  lineinfile:
+    path: "{{ pyenv_root }}version"
+    regexp: "^{{ pyenv_version_global }}"
+    line: "{{ pyenv_version_global }}"
+    create: yes
+    state: present

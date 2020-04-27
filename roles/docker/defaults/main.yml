@@ -1,0 +1,7 @@
+---
+ohmyzsh_users:
+  - user_name: ltsuda
+    user_group: ltsuda
+    user_home: /home/ltsuda/
+
+docker_compose_version: 1.25.5
