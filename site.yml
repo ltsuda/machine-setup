@@ -10,3 +10,4 @@
     - { role: sys-essentials, become: yes }
     - { role: user, become: yes }
     - { role: ohmyzsh, become: no }
+    - { role: pyenv, become: no }

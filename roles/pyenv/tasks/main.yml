@@ -1,0 +1,33 @@
+---
+- name: Install required packages as "build problems" wiki
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - make
+    - libssl-dev
+    - zlib1g-dev
+    - libbz2-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - wget
+    - curl
+    - llvm
+    - libncurses5-dev
+    - libncursesw5-dev
+    - xz-utils
+    - tk-dev
+    - libffi-dev
+    - liblzma-dev
+    - python-openssl
+  become: yes
+
+- name: Include pyenv tasks
+  include_tasks: pyenv.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
