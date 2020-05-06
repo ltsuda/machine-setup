@@ -1,0 +1,6 @@
+---
+- name: Include user tasks
+  include_tasks: user.yml
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users

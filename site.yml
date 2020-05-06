@@ -8,3 +8,4 @@
   roles:
     - { role: sys-update, become: yes }
     - { role: sys-essentials, become: yes }
+    - { role: user, become: yes }
