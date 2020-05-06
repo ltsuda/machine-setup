@@ -1,0 +1,12 @@
+---
+- name: Update local packages cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 86400
+
+- name: Upgrade all system packages
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
