@@ -1,6 +1,6 @@
 #!./wrapper/playbookwrapper.sh
 ---
-- hosts: newusers
+- hosts: wsl
   become_method: sudo
   roles:
     - { role: common, become: no }
