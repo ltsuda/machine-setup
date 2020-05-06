@@ -1,0 +1,6 @@
+ohmyzsh_users:
+  - user_name: &name WSL_USER
+    user_group: *name
+    user_home: /home/WSL_USER/
+    user_email: EMAIL_TO_SSH_KEY_COMMENT
+    user_shell: /bin/zsh
