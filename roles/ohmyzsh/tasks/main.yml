@@ -1,0 +1,16 @@
+---
+- name: Install zsh
+  package:
+    name: zsh
+    state: present
+  become: yes
+
+- name: Include oh-my-zsh tasks
+  include_tasks: ohmyzsh.yml
+  args:
+    apply:
+      become: yes
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users

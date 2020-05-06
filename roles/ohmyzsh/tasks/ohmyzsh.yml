@@ -1,0 +1,66 @@
+---
+- name: Ensure user's default shell is zsh
+  user:
+    name: "{{ loop_ohmyzsh_users.user_name }}"
+    shell: "{{ loop_ohmyzsh_users.user_shell }}"
+  become: yes
+
+- name: Ensure .cache directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.cache"
+    state: directory
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Download oh-my-zsh installer
+  get_url:
+    url: https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    dest: "{{ loop_ohmyzsh_users.user_home }}.cache/oh-my-zsh-install.sh"
+    mode: 0750
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Verify if ".oh-my-zsh" directory exists (if ohmyzsh is installed)
+  stat:
+    path: "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/"
+  register: ohmyzsh
+
+- name: Install oh-my-zsh
+  command: bash "{{ loop_ohmyzsh_users.user_home }}.cache/oh-my-zsh-install.sh"
+  when: not ohmyzsh.stat.exists
+ 
+- name: Ensure ".oh-my-zsh/custom/plugins/" directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/custom/plugins/"
+    state: directory
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Read ".oh-my-zsh/custom/plugins/" to test if already exists later
+  command: ls "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/custom/plugins/"
+  register: ohmyzsh_plugins_dir
+
+- name: Download auto suggestion plugin to oh-my-zsh plugins directory
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    version: master
+  when: ohmyzsh_plugins_dir.stdout.find('zsh-autosuggestions') != 0
+
+- name: Download syntax highlighting plugin to oh-my-zsh plugins directory
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    version: master
+  when: ohmyzsh_plugins_dir.stdout.find('zsh-syntax-highlighting') != 0
+
+- name: Configure .zshrc
+  lineinfile:
+    path: "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    backrefs: true
+    state: present
+  loop: "{{ ohmyzsh_config }}"

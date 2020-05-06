@@ -1,0 +1,11 @@
+---
+ohmyzsh_config:
+  - { regexp: '^ZSH_THEME=".+"$', line: 'ZSH_THEME="refined"' }
+  - { regexp: '^plugins=\(.+\)', line: 'plugins=({{ ohmyzsh_plugins }})' }
+  - { regexp: '^# alias zshconfig="mate ~/.zshrc"', line: 'alias zshconfig="nano ~/.zshrc"' }
+
+ohmyzsh_plugins: >-
+  git
+  colored-man-pages
+  zsh-autosuggestions
+  zsh-syntax-highlighting
