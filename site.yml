@@ -7,3 +7,4 @@
     - vars/main.yml
   roles:
     - { role: sys-update, become: yes }
+    - { role: sys-essentials, become: yes }
