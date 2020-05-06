@@ -1,0 +1,38 @@
+---
+- name: Ensure .cache directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.cache"
+    state: directory
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Download poetry installer script
+  get_url:
+    url: https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+    dest: "{{ loop_ohmyzsh_users.user_home }}.cache/get-poetry.py"
+    mode: 0750
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Verify if ".poetry" directory exists (if poetry is installed)
+  stat:
+    path: "{{ loop_ohmyzsh_users.user_home }}.poetry/"
+  register: poetry
+
+- name: "[BUG-Ubuntu20.04 without python] Install poetry"
+  command: "{{ loop_ohmyzsh_users.user_home }}.pyenv/shims/python {{ loop_ohmyzsh_users.user_home }}.cache/get-poetry.py"
+  when: not poetry.stat.exists
+
+- name: Read ".zshrc" to test if poetry contents already exists
+  command: cat "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+  register: zshrc_content
+
+- name: Add poetry PATH to .zshrc
+  blockinfile:
+    path: "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+    state: present
+    block: |
+      export PATH="$HOME/.poetry/bin:$PATH"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK POETRY"
+  when: zshrc_content.stdout.find('export PATH="$HOME/.poetry/bin:$PATH"') != 0

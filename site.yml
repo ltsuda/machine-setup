@@ -11,3 +11,4 @@
     - { role: user, become: yes }
     - { role: ohmyzsh, become: no }
     - { role: pyenv, become: no }
+    - { role: poetry, become: no }
