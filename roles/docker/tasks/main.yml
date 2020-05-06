@@ -1,0 +1,22 @@
+---
+- name: Include docker tasks for Ubuntu 18.04
+  include_tasks: ubuntu18.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
+
+- name: Include docker tasks for Ubuntu 20.04
+  include_tasks: ubuntu20.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")

@@ -12,3 +12,4 @@
     - { role: ohmyzsh, become: no }
     - { role: pyenv, become: no }
     - { role: poetry, become: no }
+    - { role: docker, become: no }

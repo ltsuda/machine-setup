@@ -1,0 +1,25 @@
+---
+- name: Install docker and docker-compose on Ubuntu 20.04
+  package:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - docker
+    - docker-compose
+  notify: restart docker
+
+- name: Ensure Docker is started and enabled at boot.
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Add current user to docker group
+  user:
+    name: "{{ loop_ohmyzsh_users.user_group }}"
+    append: yes
+    groups: docker
+    system: yes
+  become: yes
