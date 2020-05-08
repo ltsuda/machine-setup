@@ -3,7 +3,6 @@
   package:
     name: "{{ item }}"
     state: present
-  become: yes
   with_items:
     - docker
     - docker-compose
@@ -14,7 +13,7 @@
     name: docker
     state: started
     enabled: yes
-  become: yes
+  when: wsl is defined and wsl=="no"
 
 - name: Add current user to docker group
   user:
@@ -22,4 +21,3 @@
     append: yes
     groups: docker
     system: yes
-  become: yes
