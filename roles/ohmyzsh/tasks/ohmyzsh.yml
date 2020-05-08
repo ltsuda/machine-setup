@@ -1,10 +1,4 @@
 ---
-- name: Ensure user's default shell is zsh
-  user:
-    name: "{{ loop_ohmyzsh_users.user_name }}"
-    shell: "{{ loop_ohmyzsh_users.user_shell }}"
-  become: yes
-
 - name: Ensure .cache directory exists
   file:
     path: "{{ loop_ohmyzsh_users.user_home }}.cache"

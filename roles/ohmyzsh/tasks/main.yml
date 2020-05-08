@@ -1,10 +1,4 @@
 ---
-- name: Install zsh
-  package:
-    name: zsh
-    state: present
-  become: yes
-
 - name: Include oh-my-zsh tasks
   include_tasks: ohmyzsh.yml
   args:
