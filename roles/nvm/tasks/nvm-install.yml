@@ -1,20 +1,10 @@
 ---
-- name: Ensure ".nvm/versions/node" directory exists
-  file:
-    path: "{{ loop_ohmyzsh_users.user_home }}.nvm/versions/node"
-    state: directory
-    mode: 0750
-    owner: "{{ loop_ohmyzsh_users.user_name }}"
-    group: "{{ loop_ohmyzsh_users.user_group }}"
-
-- name: Read ".nvm/versions/node" to test if versions already installed
-  command: ls "{{ loop_ohmyzsh_users.user_home }}.nvm/versions/node"
-  register: node_versions
-
-- name: Install node versions
-  command: "{{ loop_ohmyzsh_users.user_home }}.pyenv/bin/pyenv install {{ item }}"
-  loop: "{{ pyenv_versions }}"
-  when: item not in node_versions.stdout_lines
+- name: Install node LTS and latest npm
+  shell: "source {{ loop_ohmyzsh_users.user_home }}.nvm/nvm.sh && nvm install --lts --latest-npm"
+  args:
+    executable: "{{ loop_ohmyzsh_users.user_shell }}"
 
 - name: Set nvm use LTS
-  command: "source {{ loop_ohmyzsh_users.user_home }}.nvm/nvm.sh && nvm install {{ item }}"
+  shell: "source {{ loop_ohmyzsh_users.user_home }}.nvm/nvm.sh && nvm use --lts"
+  args:
+    executable: "{{ loop_ohmyzsh_users.user_shell }}"

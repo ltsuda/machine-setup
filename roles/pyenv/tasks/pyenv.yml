@@ -24,7 +24,15 @@
   command: "{{ loop_ohmyzsh_users.user_shell }} {{ loop_ohmyzsh_users.user_home }}.cache/pyenv-install.sh"
   when: not pyenv.stat.exists
 
-- name: Read ".zprofile" to test if pyenv contents already exists
+- name: Ensure .zprofile file exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.zprofile"
+    state: touch
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Read ".zprofile" to test if zprofile contents already exists
   command: cat "{{ loop_ohmyzsh_users.user_home }}.zprofile"
   register: zprofile_content
 

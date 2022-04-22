@@ -12,3 +12,10 @@
   loop_control:
     loop_var: loop_ohmyzsh_users
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+
+- name: Include docker tasks for Ubuntu 22.04
+  include_tasks: ubuntu20.yml
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "22")
