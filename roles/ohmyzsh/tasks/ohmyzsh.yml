@@ -23,7 +23,7 @@
 - name: Install oh-my-zsh
   command: bash "{{ loop_ohmyzsh_users.user_home }}.cache/oh-my-zsh-install.sh"
   when: not ohmyzsh.stat.exists
- 
+
 - name: Ensure ".oh-my-zsh/custom/plugins/" directory exists
   file:
     path: "{{ loop_ohmyzsh_users.user_home }}.oh-my-zsh/custom/plugins/"

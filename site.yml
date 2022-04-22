@@ -12,5 +12,5 @@
     - { role: ohmyzsh, become: no }
     - { role: pyenv, become: no }
     - { role: poetry, become: no }
+    - { role: nvm, become: no }
     - { role: docker, become: yes }
-    # - { role: robot, become: no } -- WIP -- refactoring

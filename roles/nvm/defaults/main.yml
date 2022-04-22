@@ -1,0 +1,4 @@
+---
+node_versions:
+  - --lts --latest-npm
+  - v12.22.12

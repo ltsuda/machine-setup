@@ -1,5 +1,4 @@
 ---
-pyenv_version_global: &py_global 3.8.2
+pyenv_version_global: &py_global 3.10.4
 pyenv_versions:
-  - 3.7.7
   - *py_global

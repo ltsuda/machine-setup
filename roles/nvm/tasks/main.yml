@@ -1,0 +1,20 @@
+---
+- name: Include nvm tasks
+  include_tasks: nvm.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
+
+- name: Include nvm install tasks
+  include_tasks: nvm-install.yml
+  args:
+    apply:
+      become: true
+      become_user: "{{ loop_ohmyzsh_users.user_name }}"
+  loop: "{{ ohmyzsh_users|flatten(levels=1) }}"
+  loop_control:
+    loop_var: loop_ohmyzsh_users
