@@ -4,6 +4,7 @@
 ### Tested on Virtualbox Machines and WSL:
 - Ubuntu 18.04
 - Ubuntu 20.04
+- Ubuntu 22.04
 
 ## WSL2
 For docker to work properly on WSL2, make sure to install and configure the Docker Desktop app for Windows, enabling the WSL2 backend and the WSL integration. Also, after running this playbook, make sure to reopen the WSL session to use the updated environment.
