@@ -35,5 +35,5 @@
     block: |
       export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK POETRY"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK NVM"
   when: zshrc_content.stdout.find('export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"') != 0 and zshrc_content.stdout.find('[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"')
