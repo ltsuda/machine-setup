@@ -17,9 +17,9 @@
     - libncursesw5-dev
     - xz-utils
     - tk-dev
+    - libxml2-dev
     - libffi-dev
     - liblzma-dev
-    - python-openssl
   become: yes
 
 - name: Include pyenv tasks

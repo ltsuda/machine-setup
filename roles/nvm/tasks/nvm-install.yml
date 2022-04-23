@@ -1,0 +1,10 @@
+---
+- name: Install node LTS and latest npm
+  shell: "source {{ loop_ohmyzsh_users.user_home }}.nvm/nvm.sh && nvm install --lts --latest-npm"
+  args:
+    executable: "{{ loop_ohmyzsh_users.user_shell }}"
+
+- name: Set nvm use LTS
+  shell: "source {{ loop_ohmyzsh_users.user_home }}.nvm/nvm.sh && nvm use --lts"
+  args:
+    executable: "{{ loop_ohmyzsh_users.user_shell }}"

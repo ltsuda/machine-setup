@@ -9,3 +9,7 @@ ohmyzsh_plugins: >-
   colored-man-pages
   zsh-autosuggestions
   zsh-syntax-highlighting
+  pyenv
+  gpg-agent
+  z
+  poetry

@@ -1,0 +1,39 @@
+---
+- name: Ensure .cache directory exists
+  file:
+    path: "{{ loop_ohmyzsh_users.user_home }}.cache"
+    state: directory
+    mode: 0755
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Download nvm installer script
+  get_url:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh
+    dest: "{{ loop_ohmyzsh_users.user_home }}.cache/nvm-install.sh"
+    mode: 0750
+    owner: "{{ loop_ohmyzsh_users.user_name }}"
+    group: "{{ loop_ohmyzsh_users.user_group }}"
+
+- name: Verify if ".nvm" directory exists (if nvm is installed)
+  stat:
+    path: "{{ loop_ohmyzsh_users.user_home }}.nvm/"
+  register: nvm
+
+- name: "Install nvm"
+  command: "{{ loop_ohmyzsh_users.user_home }}.cache/nvm-install.sh"
+  when: not nvm.stat.exists
+
+- name: Read ".zshrc" to test if nvm contents already exists
+  command: cat "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+  register: zshrc_content
+
+- name: Add nvm PATH to .zshrc
+  blockinfile:
+    path: "{{ loop_ohmyzsh_users.user_home }}.zshrc"
+    state: present
+    block: |
+      export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK NVM"
+  when: zshrc_content.stdout.find('export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"') != 0 and zshrc_content.stdout.find('[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"')

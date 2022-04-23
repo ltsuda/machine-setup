@@ -1,8 +1,0 @@
----
-# these ARE NOT browser versions! These are the versions of the drivers to download and install
-
-# geck driver version
-gecko_version: 0.24.0
-
-# chrome driver version
-chrome_version: 74.0.3729.6
