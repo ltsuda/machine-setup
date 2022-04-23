@@ -23,7 +23,7 @@ Make sure site.yml and /wrapper/playbookwrapper.sh has Execution permission '-x'
 
 then run the following command with the correct variable "wsl" set o "yes" if you're running on the WSL or "no" to if it's running on a virtual machine.
 
-` ./site.yml -i inventory -K -e "wsl=yes"`
+`./site.yml -i inventory -K -e "wsl=yes"`
 
 **NOTE:**
 
