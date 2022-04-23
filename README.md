@@ -11,7 +11,7 @@ For docker to work properly on WSL2, make sure to install and configure the Dock
 
 #### Steps to run:
 
-` git clone https://github.com/ltsuda/machine-setup.git `
+`git clone https://github.com/ltsuda/machine-setup.git`
 
 Make sure to replace the following variables on file vars/main.yml:
 - WSL_USER => your linux user name
